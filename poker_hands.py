@@ -4,7 +4,7 @@
 from collections import namedtuple
 
 
-class Card(namedtuple('Card', ['value', 'suite'])):
+class Card(namedtuple('Card', ['value', 'suit'])):
 
     # Settings __slots__ to an empty tuple to keep memory requirements
     # low by preventing the creation of instance dictionaries
@@ -34,7 +34,7 @@ class Card(namedtuple('Card', ['value', 'suite'])):
         return cls(card_str[0], card_str[1])
 
     def __str__(self):
-        return '{}{}'.format(self.value, self.suite)
+        return '{}{}'.format(self.value, self.suit)
 
     # This makes sure our string implementation is used even when
     # a list of Card objects is printed/string formatted
@@ -134,14 +134,14 @@ class PokerHand(object):
         :return: A 2-tuple: hand type, ranks counts
         :rtype: (PokerHandType(Enum), dict)
         """
-        # Let's first calculate the frequency of each value in card, and associate it with the rank of that value
+        # Let's first calculate the frequency of each value in hand, and associate it with the rank of that value
         all_values = [c.value for c in self.cards]
-        rank_counts = {Card.RANKS[value]: all_values.count(value) for value, suite in self.cards}
+        rank_counts = {Card.RANKS[value]: all_values.count(value) for value, suit in self.cards}
         # e.g. for 2D, 2C, 2H, KH, 3H, this will create a dictionary {2: 3, 13: 1, 3: 1}
         # where 2, 13, 3 is the rank of '2', 'K', '3' resp.,
         # and 3, 1, 1 is the frequency (in this hand) of '2', 'K', '3' resp.
 
-        # For flushes, there's a special case: Five high Straight (A-2-3-4-5), also called as wheel
+        # For flushes, there's a special case: Five-high Straight (A-2-3-4-5), also called as wheel
         wheel_rank_counts = {
             Card.RANKS['A']: 1,
             Card.RANKS['5']: 1,
@@ -174,12 +174,12 @@ class PokerHand(object):
             return PokerHandType.ONE_PAIR, rank_counts
         else:
             # This leaves open Flushes, Straights and High Card
-            all_suites = [c.suite for c in self.cards]
-            # Check if all suites are equal
-            is_flush = all(s == all_suites[0] for s in all_suites[1:])
+            all_suits = [c.suit for c in self.cards]
+            # Check if all suits are equal
+            is_flush = all(s == all_suits[0] for s in all_suits[1:])
 
             # In case of a straight, difference between highest & lowest count is 4 (including five-high straight
-            # since we replaced the rank of A with that of AW)
+            # since we replaced the rank of 'A' with that of 'AW')
             is_straight = ranks[0] - ranks[4] == 4
 
             if is_flush and is_straight:
