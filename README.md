@@ -1,4 +1,4 @@
-# poker-hands-comparator
+# Poker Hands Comparator
 A Python implementation which categorizes 5-card-hands as per the rules of Poker. The PokerHand class
 also implements `__cmp__` method to compare or sort hands.
 
