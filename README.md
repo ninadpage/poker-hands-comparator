@@ -10,4 +10,4 @@ Tested with Python 2.7. Can be made Python 3.x compatible by splitting `PokerHan
 into `__lt__` and `__eq__`.
 
 ### Tests
-Execute all tests using `$ python -m unittest discover`
+Execute all tests using `$ python -m unittest discover` from the project directory.
